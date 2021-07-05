@@ -1,0 +1,351 @@
+% HyPro beamer template
+% @author Stefan Schupp <stefan.schupp@cs.rwth-aachen.de>
+%
+%
+%
+
+\mode<presentation>
+
+%#####  options  #####
+\newif\if@dfg
+\@dfgfalse
+\DeclareOption{dfg}{\@dfgtrue}
+%\ProcessOptions
+
+\newif\if@unravel
+\@unravelfalse
+\DeclareOption{unravel}{\@unraveltrue}
+%\ProcessOptions
+
+\newif\if@logo
+\@logofalse
+\DeclareOption{logo}{\@logotrue}
+
+\newif\if@bgimage
+\@bgimagefalse
+\DeclareOption{bgimage}{\@bgimagetrue}
+
+\newif\if@round
+\@roundfalse
+\DeclareOption{round}{\@roundtrue}
+
+\newif\if@disableFrameNumbers
+\@disableFrameNumbersfalse
+\DeclareOption{disableFrameNumbers}{\@disableFrameNumberstrue}
+
+\ProcessOptions
+
+%##### frame options #####
+
+\define@key{beamerframe}{nobg}[false]{%
+	\setbeamertemplate{background canvas}{}%
+}%
+
+\define@key{beamerframe}{grey}[false]{%
+	\setbeamercolor{background canvas}{bg=black25}%
+	\setbeamertemplate{background canvas}{\color{bg}\vrule width\paperwidth height\paperheight}%
+	\setbeamertemplate{blocks}[rounded][shadow=false]%
+	%\tikzset{external/export next=false}
+	%\begin{tikzpicture}[remember picture,overlay]%
+		%\draw (current page.south east) ++(0cm,0em) coordinate (picture);
+	%	\fill[black100, fill opacity=.25] (0,0) rectangle (current page.south east);
+	%\end{tikzpicture}%
+}
+
+
+%#####  packages  #####
+\usepackage{mathptmx}
+\usepackage{tucolors}
+%\usepackage{rwthcolors}
+\usepackage{mathpazo}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usepackage{fontawesome}
+\usepackage{adjustbox}
+\usepackage{graphicx}
+
+%#####  general setup  #####
+%\useoutertheme{infolines}
+\useinnertheme{rectangles}
+%\usefonttheme{professionalfonts}
+%\usefonttheme{serif}
+\usepackage[T1]{fontenc}
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
+\usefonttheme[onlymath]{serif}
+
+%##### for debugging, uncomment this #####
+%\overfullrule=1mm
+
+
+%##### fonts #####
+%\setbeamerfont{block title}{family={\fontfamily{ppl}} }
+
+%#####  colorsettings  #####
+
+\hypersetup{colorlinks,allcolors=.,urlcolor=blue75}
+
+\setbeamercolor{alerted text}{fg=red100}
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{block body alerted}{bg=black10}
+\setbeamercolor{block body}{bg=black10}
+\setbeamercolor{block body example}{bg=black10}
+\setbeamercolor{block title alerted}{bg=alerted text.fg, fg=white}
+\setbeamercolor{block title}{bg=blue100, fg=white}
+\setbeamercolor{block title example}{bg=green100, fg=white}
+\setbeamercolor{fine separation line}{}
+\setbeamercolor{frametitle}{fg=blue100}
+\setbeamercolor{item projected}{fg=white}
+\setbeamercolor{normal text}{fg=black100}
+\setbeamercolor{palette sidebar primary}{use=normal text,fg=normal text.fg}
+\setbeamercolor{palette sidebar quaternary}{use=structure,fg=structure.fg}
+\setbeamercolor{palette sidebar secondary}{use=structure,fg=structure.fg}
+\setbeamercolor{palette sidebar tertiary}{use=normal text,fg=normal text.fg}
+\setbeamercolor{section in sidebar}{fg=blue100}
+\setbeamercolor{section in sidebar shaded}{fg=black50}
+\setbeamercolor{section in toc}{fg=blue100}
+\setbeamercolor{section in toc shaded}{fg=black50}
+\setbeamercolor{separation line}{}
+\setbeamercolor{structure}{fg=blue100}
+\setbeamercolor{subsection in sidebar}{fg=blue100}
+\setbeamercolor{subsection in sidebar shaded}{fg=black50}
+\setbeamercolor{title}{fg=blue100}
+\setbeamercolor{titlelike}{fg=black100}
+\setbeamercolor{description item}{fg=blue100}
+\setbeamercolor{itemize item}{fg=blue100}
+\setbeamercolor{headline}{fg=white,bg=blue75}
+
+%#####  pre-saved images to speed up compilation #####
+\newbox\logoThsImg
+\sbox\logoThsImg{\includegraphics{logo_ths}}
+%\savebox\logoImg{\includegraphics[height=0.75cm]{logo_ths}}
+
+\newbox\logoCpsImg
+\sbox\logoCpsImg{\includegraphics{TU_logo}}
+
+\newbox\logoWWUImg
+\sbox\logoWWUImg{\includegraphics{WWU_logo}}
+
+\newbox\unravelImg
+\sbox\unravelImg{\includegraphics{pics/rwth_unravel_bild_rgb}}
+
+\newbox\bgImg
+\savebox\bgImg{\includegraphics[height=.5\paperheight]{pics/background.png}}
+
+
+%##### commands #####
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+
+
+%#####  customization  #####
+\setbeamerfont{title}{series=\bfseries}
+%\setbeamerfont{alerted text}{series=\bfseries\boldmath}
+
+\BeforeBeginEnvironment{frame}{%
+  \setbeamertemplate{background canvas}{
+	\ifnum\c@framenumber=0%
+	\else%
+	\ifbeamer@plainframe%
+	\else%
+	\if@bgimage%
+	\includegraphics[]{pics/background_full.png}%
+	\else%
+	\fi%
+	\fi%
+	\fi%
+}
+}
+
+\setbeamertemplate{bibliography item}{\faFileText}%[online]
+
+\setbeamersize{text margin left=.5cm,text margin right=.5cm}
+
+\beamertemplatenavigationsymbolsempty
+
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% reminder block in yellow
+\newenvironment<>{reminder}[2][\textwidth]{%
+  \begin{actionenv}\footnotesize#3%
+	\setlength{\textwidth}{#1}%
+      \def\insertblocktitle{\small#2}%
+      \par%
+      \mode<presentation>{%
+        \setbeamercolor{block title}{fg=black,bg=yellow100}
+	   \setbeamercolor{block body}{fg=black,bg=yellow25}
+	   \setbeamercolor{itemize item}{fg=yellow100}
+     }%
+      \usebeamertemplate{block begin}}
+	{\par\usebeamertemplate{block end}\end{actionenv}}
+
+% result block in green
+\newenvironment<>{result}[2][\textwidth]{%
+  \begin{actionenv}\footnotesize#3%
+	\setlength{\textwidth}{#1}%
+      \def\insertblocktitle{\small#2}%
+      \par%
+      \mode<presentation>{%
+        \setbeamercolor{block title}{fg=black,bg=green100}
+	   \setbeamercolor{block body}{fg=black,bg=green25}
+	   \setbeamercolor{itemize item}{fg=green100}
+     }%
+      \usebeamertemplate{block begin}}
+    {\par\usebeamertemplate{block end}\end{actionenv}}
+
+\usepackage{calc}
+\setbeamertemplate{headline}{%
+%	\vskip0.1cm%
+%	\leavevmode%
+%	\hbox{%
+%		\ifx\insertframetitle\@empty%
+%		\begin{beamercolorbox}[wd=.5\paperwidth,ht=0.25cm, dp=0.4ex, rounded=true]{background canvas}%
+%		\large\phantom{yM}%
+%		\end{beamercolorbox}
+%% 		\vspace*{-\headheight}
+%		\else%
+%		\begin{beamercolorbox}[wd=.9\paperwidth,ht=0.25cm, dp=0.4ex, rounded=true]{headline}%
+%			%\vspace*{-.5ex}
+%			\hspace*{0.3cm}%
+%			\large%
+%%                        \small
+%                        \insertsectionhead%
+%                        %\ifx\insertsubsectionhead\@empty \else \hspace*{1ex} $\rhd$ \insertsubsectionhead \fi%
+%                        %\phantom{yM}%
+%			%\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll}
+%		\end{beamercolorbox}%
+%	%	\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,right]{palette secondary}%
+%	%		\usebeamerfont{title in head/foot}\insertshorttitle\hspace*{1em}
+%	%	\end{beamercolorbox}%
+%		\fi
+%	}
+%
+}
+
+\setbeamertemplate{frametitle}{%
+    \vskip0.1cm%
+    \hspace{-.4cm}%
+    %\hbox{%
+    \if@round%
+    \begin{beamercolorbox}[wd=.9\paperwidth,ht=0.25cm, dp=0.4ex, rounded=true]{frametitle}%
+    	\hspace*{0.4cm}%
+    	\Large%
+        {\sffamily\insertframetitle}%
+    \end{beamercolorbox}%
+    \else%
+    \begin{beamercolorbox}[wd=.9\paperwidth,ht=0.45cm, dp=0.2cm, rounded=false, leftskip=.2cm]{frametitle}%
+    	%\hspace*{0.4cm}%
+    	\Large%
+        {\sffamily\insertframetitle}%
+    \end{beamercolorbox}%
+    %\hspace{.1cm}%
+    %\begin{beamercolorbox}[wd=.5cm,ht=0.45cm, dp=0.2cm, rounded=false]{frametitle}%
+    %    {\scriptsize\makebox[.65cm][r]{\sffamily{\insertframenumber{}}}}%
+    %\end{beamercolorbox}%
+    \fi%
+    %}%
+}
+
+\setbeamertemplate{footline}{
+	\leavevmode%
+	%\hbox{%
+		\if@logo%
+		\begin{beamercolorbox}[wd=.30\paperwidth,left,dp=.1cm]{palette secondary}%s
+			\hspace*{.1cm}\includegraphics[width=.30\paperwidth,height=.7cm,keepaspectratio]{pics/TU_logo.png}%
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.60\paperwidth,center,dp=.1cm]{palette secondary}%
+		\hspace*{-.15\paperwidth}%
+		\else%
+		\begin{beamercolorbox}[wd=.90\paperwidth,center,dp=.1cm]{palette secondary}%
+		\hspace*{.05\paperwidth}%
+		\fi%
+			\footnotesize\usebeamerfont{author in%
+head/foot}%
+{\sffamily\insertshortauthor}%
+		\end{beamercolorbox}%
+		\hfill%
+		\begin{beamercolorbox}[wd=.10\paperwidth,right, dp=.1cm]{date in head/foot}%
+			%\small\usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+			\if@disableFrameNumbers%
+			\else%
+			\footnotesize\makebox[4ex][r]{\sffamily{\insertframenumber{}}/\makebox[4ex][l]{\inserttotalframenumber}}%
+			\fi%
+		\end{beamercolorbox}%
+	%}%
+\vskip0pt%
+}
+
+\setbeamertemplate{title page}
+{
+	\begin{centering}
+		\vspace*{0.5cm}
+		\begin{beamercolorbox}[sep=8pt,center]{title}
+			\usebeamerfont{title}\inserttitle\par%
+			\ifx\insertsubtitle\@empty%
+			\else%
+			\vskip0.25em%
+			{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+			\fi%
+		\end{beamercolorbox}%
+		\vskip1em\par
+		\begin{beamercolorbox}[sep=8pt,center]{author}
+			\usebeamerfont{author}\insertauthor
+		\end{beamercolorbox}
+		\begin{beamercolorbox}[sep=8pt,center]{institute}
+			\if@logo
+			\includegraphics[height=1cm]{pics/TU_logo.png}\\
+			%\else
+			%\vspace*{1cm}
+			\fi
+			\usebeamerfont{institute}\insertinstitute
+		\end{beamercolorbox}
+		\begin{beamercolorbox}[sep=8pt,center]{date}
+			\usebeamerfont{date}\insertdate
+		\end{beamercolorbox}%\vskip0.5em
+		\vfill
+		\if@dfg
+		\vspace*{1cm}
+		\tiny
+		This work is part of the project HyPro
+		\if@unravel
+		and the Research Training Group 2236 UnRAVeL
+		\fi
+		\\
+		\href{http://ths.rwth-aachen.de/research/hypro/}{\includegraphics[width=.15\paperwidth]{pics/hypro_logo.png}}
+		\if@unravel
+		\qquad
+		\href{https://moves.rwth-aachen.de/research/projects/unravel/}{\includegraphics[width=.15\paperwidth]{pics/rwth_unravel_bild_rgb.png}}\\
+		\else
+		\\
+		\fi
+		which
+		\if@unravel
+		are
+		\else
+		is
+		\fi
+		funded by the German Research Council (DFG).
+		\else
+		\if@unravel
+		\tiny
+		This work is part of the  Research Training Group 2236 UnRAVeL\\
+		\href{https://moves.rwth-aachen.de/research/projects/unravel/}{\includegraphics[width=.15\paperwidth]{pics/rwth_unravel_bild_rgb.png}}\\
+		which is funded by the German Research Council (DFG).
+		\else
+		\vspace*{1.6cm}
+		\fi
+		\fi
+
+	\end{centering}
+	% adjust page count
+	\addtocounter{framenumber}{-1}
+	%\vfill
+}
+
+\mode
+<all>

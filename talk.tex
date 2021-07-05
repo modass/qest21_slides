@@ -1,20 +1,122 @@
-\documentclass[]{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usetheme[logo]{hypro} % the template, I can adjust it to WWU, if you want
 \usepackage[useregional]{datetime2} % nice date typesetting
+\usepackage{csquotes} % to quote stuff via \enquote{stuff}
+\usepackage{xspace} % automated spacing after macros
+\usepackage[normalem]{ulem} % allows to strikethrough text via \sout{text}
 
-\title{Some title}
-\author[Stefan Schupp]{Stefan Schupp}
-\date{\DTMdisplaydate{2021}{7}{8}{-1}}
+\title{Optimizing reachability probabilities for a restricted class of Stochastic Hybrid Automata via Flowpipe-Construction}
+\author[Stefan Schupp]{Carina Pilch, \textbf{Stefan Schupp}, Anne Remke}
+\date{\DTMdisplaydate{2021}{7}{7}{-1}}
+
+%################ Commands
+\newcommand{\cb}[1]{\textcolor{blue100}{#1}\xspace}
+
+
 
 \begin{document}
 
 \begin{frame}[plain]
 \maketitle
-    
 \end{frame}
 
-\begin{frame}{My first frame}
-    
+%########################################################
+
+\begin{frame}{The problem in a nutshell}
+  \enquote{\alert<5>{Optimizing \alert<4>{reachability probabilities}} for a \alert<3>{restricted class of \alert<2>{Stochastic \alert<1>{Hybrid Automata}}} via \alert<6>{Flowpipe-Construction}}
+
+  \bigskip
+
+  \only<1>{Hybrid automata: a model for \emph{hybrid systems}
+
+  \cb{\faArrowRight} mixed discrete-continuous behavior
+  }%
+  \only<2>{Stochastic hybrid automata: a model for \emph{stochastic} hybrid systems
+
+  \cb{\faArrowRight} add stochasticity
+  \begin{itemize}
+    \item continuous behavior: stochastic differential equations
+    \item discrete behavior: stochastic jumps
+  \end{itemize}
+  }%
+  \only<3>{Stochastic hybrid automata: a model for \emph{stochastic} hybrid systems
+
+  \cb{\faArrowRight} add stochasticity
+  \begin{itemize}
+    \item \sout{continuous behavior: stochastic differential equations}
+    \item discrete behavior: stochastic \alert<3>{urgent} jumps
+    \item \cb{\emph{linear hybrid automata}}
+    \begin{itemize}
+      \item constant derivatives
+      \item predicates compare variables to constants (\enquote{axis-aligned})
+    \end{itemize}
+  \end{itemize}
+  \medskip
+
+  \cb{Origin:} stochastic hybrid Petri nets with general transitions
+  }%
+  \only<4>{\cb{Question:} What is the probability, given a set of initial states of reaching a set of \emph{goal states}?}%
+  \only<5>{\cb{Question:} What is the \alert{maximal/minimal} probability, given a set of initial states of reaching a set of \emph{goal states}?}%
+  \only<6>{The method.}%
 \end{frame}
+
+%########################################################
+
+\begin{frame}{The approach}
+  \cb{Idea:} combination of techniques for purely hybrid systems and techniques for the analysis of stochastic systems
+
+  \begin{enumerate}
+    \item Compute forwards reachability
+    \begin{itemize}
+      \item Treat stochastic variables as clocks
+      \item Keep track of \enquote{what you did} $\rightarrow$ \emph{reach tree}
+    \end{itemize}
+    \item Collect paths which lead to a goal state
+    \item Compute \emph{optimal} probability of those paths with respect to different \emph{schedulers}
+  \end{enumerate}
+
+  \begin{reminder}{Scheduler}{5cm}
+    Intuition: a scheduler resolves non-determinism
+
+    Different types, relevant here:
+    \begin{itemize}
+      \item History-dependent (has memory),
+      \item Prophetic (can predict the future) vs.
+      \item Non-prophetic (decisions based on current knowledge)
+    \end{itemize}
+  \end{reminder}
+\end{frame}
+
+%########################################################
+
+\begin{frame}{Flowpipe construction \& reach tree}
+
+\end{frame}
+
+%########################################################
+
+\begin{frame}{Projection on random clocks}
+
+\end{frame}
+
+%########################################################
+
+\begin{frame}{Optimal paths}
+
+\end{frame}
+
+%########################################################
+
+\begin{frame}{Numerical integration: Monte Carlo simulation}
+
+\end{frame}
+
+%########################################################
+
+\begin{frame}{Conclusion \& prospect}
+
+\end{frame}
+
+%########################################################
 
 \end{document}

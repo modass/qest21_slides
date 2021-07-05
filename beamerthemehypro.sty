@@ -33,6 +33,7 @@
 \@disableFrameNumbersfalse
 \DeclareOption{disableFrameNumbers}{\@disableFrameNumberstrue}
 
+
 \ProcessOptions
 
 %##### frame options #####
@@ -40,6 +41,9 @@
 \define@key{beamerframe}{nobg}[false]{%
 	\setbeamertemplate{background canvas}{}%
 }%
+
+% make content top-aligned per default
+\beamer@centeredfalse
 
 \define@key{beamerframe}{grey}[false]{%
 	\setbeamercolor{background canvas}{bg=black25}%
@@ -63,6 +67,7 @@
 \usepackage{fontawesome}
 \usepackage{adjustbox}
 \usepackage{graphicx}
+\usepackage[many]{tcolorbox}
 
 %#####  general setup  #####
 %\useoutertheme{infolines}
@@ -122,8 +127,8 @@
 \newbox\logoCpsImg
 \sbox\logoCpsImg{\includegraphics{TU_logo}}
 
-\newbox\logoWWUImg
-\sbox\logoWWUImg{\includegraphics{WWU_logo}}
+%\newbox\logoWWUImg
+%\sbox\logoWWUImg{\includegraphics{WWU_logo}}
 
 \newbox\unravelImg
 \sbox\unravelImg{\includegraphics{pics/rwth_unravel_bild_rgb}}
@@ -171,10 +176,10 @@
 \setbeamertemplate{blocks}[rounded][shadow=true]
 
 % reminder block in yellow
-\newenvironment<>{reminder}[2][\textwidth]{%
+\newenvironment<>{reminderRound}[2][\textwidth]{%
   \begin{actionenv}\footnotesize#3%
 	\setlength{\textwidth}{#1}%
-      \def\insertblocktitle{\small#2}%
+      \def\insertblocktitle{\small Reminder: #2}%
       \par%
       \mode<presentation>{%
         \setbeamercolor{block title}{fg=black,bg=yellow100}
@@ -183,6 +188,36 @@
      }%
       \usebeamertemplate{block begin}}
 	{\par\usebeamertemplate{block end}\end{actionenv}}
+
+	\tcbset{
+	tcbeamer/.style={
+		beamer,
+		
+	  %width=\textwidth+3pt,
+	  enlarge left by=-3pt,
+	  bottom=0pt,
+	  top=0pt,
+	  left=1pt,
+	  right=1pt,
+	  arc=0pt,
+	  outer arc=0pt,
+	  %toptitle=0pt,
+	  %bottomtitle=-1pt,
+	  }
+	}
+
+	\newenvironment<>{reminder}[1]%
+  {\begin{actionenv}\footnotesize#2%
+	\begin{tcolorbox}[
+    adjusted title=Reminder: #1,
+    tcbeamer,
+		width=\textwidth,
+    colback=yellow25,
+    colframe=yellow100,
+    fonttitle=\color{black}
+    ]
+  }
+  {\end{tcolorbox}\end{actionenv}}
 
 % result block in green
 \newenvironment<>{result}[2][\textwidth]{%

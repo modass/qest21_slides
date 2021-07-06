@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+[
+    >=latex
+    , loc/.style={circle,draw,thick, text width=1.2cm, text centered, inner sep=0.5pt}
+    , trans/.style={draw,->}
+    , every node/.style={text width=1cm,text centered}
+]
+
+\node[loc, initial below, initial text={$x=0$ $r_i = 0$}] (l0) {$l_0$\\
+                            $\dot{x} = 1$\\
+                            $\dot{r_i} = 0$\\
+                            $x\leq 1$};
+\node[loc, right=of l0] (l1) {$l_1$\\
+                            $\dot{x} = 1$\\
+                            $\dot{r_i} = 1$\\
+                            $x\leq 2$};
+                            
+\path[trans] (l0) edge[bend left=35] node[above]{$x=1$} node[below]{$x:=0$} (l1);
+\path[trans] (l1) edge[bend left=50] node[below]{$r_i := 0$} (l0);
+\path[trans] (l1) edge[bend left=10] node[above]{$x = 2$} node[below]{$x := 0$} (l0);
+
+
+\end{tikzpicture}

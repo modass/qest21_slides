@@ -1,0 +1,46 @@
+\begin{tikzpicture} [
+    scale=0.75
+    , inner sep=0cm
+    %, framed
+    ,stateSetUnbounded/.style={fill=black, fill opacity=0.2, text opacity=1}
+    ,stateSetBounded/.style={stateSetUnbounded,draw,thick}
+    , vector/.style={draw,thick,>=latex,->}
+    , >=latex
+]
+    % coordinate system
+    \draw[help lines] (0,0) grid ($(4,3.5) + (-\pgflinewidth, -\pgflinewidth)$);
+    \draw[thick,->] (0,0) -- node[pos=1,below, font=\small, yshift=-.1cm]{$s_{0,0}$}(4,0);
+    \draw[thick,->] (0,0) -- node[pos=1,left, font=\small, xshift=-.1cm]{$t$}(0,3.5);
+
+    \begin{scope}
+
+
+    \begin{scope}
+    \clip (0,0) rectangle (4,3);
+    \path[stateSetBounded, line width=1mm] (0,0) -- (4,4);
+    \end{scope}
+
+
+    \end{scope}
+
+    % some sets
+    \draw[thick, |-|] (0,-.8) -- (2,-.8);
+    \draw[thick, |-|] (2,-.8) -- (3,-.8);
+
+    \draw [decorate,decoration={brace,amplitude=10pt},xshift=0pt,yshift=-4pt]
+(2,-.8) -- (0,-.8) node [black,midway,yshift=-0.6cm]
+{\footnotesize $B\rightarrow \textit{goal}$};
+    \draw [decorate,decoration={brace,amplitude=10pt},xshift=0pt,yshift=-4pt]
+(3,-.8) -- (2,-.8) node [black,midway,yshift=-0.6cm]
+{\footnotesize $A\rightarrow \textit{goal}$};
+
+    \draw[thick] (2,0) -- node[below,pos=0, font=\footnotesize, yshift=-.1cm]{$b$} (2,3.5);
+    \draw[thick] (0,3) -- node[above,pos=0.2, font=\footnotesize]{$t_{\mathit{max}}$} (4,3);
+
+    % intervals
+
+
+    % labels
+
+
+\end{tikzpicture}

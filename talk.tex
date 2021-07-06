@@ -4,6 +4,8 @@
 \usepackage{csquotes} % to quote stuff via \enquote{stuff}
 \usepackage{xspace} % automated spacing after macros
 \usepackage[normalem]{ulem} % allows to strikethrough text via \sout{text}
+\usepackage{gnuplot-lua-tikz} % required for images
+\usetikzlibrary{calc,decorations.markings,arrows.meta,automata,backgrounds,positioning,intersections,shapes,decorations.pathreplacing,positioning}
 
 \title{Optimizing reachability probabilities for a restricted class of Stochastic Hybrid Automata via Flowpipe-Construction}
 \author[Stefan Schupp]{Carina Pilch, \textbf{Stefan Schupp}, Anne Remke}
@@ -23,66 +25,129 @@
 %########################################################
 
 \begin{frame}{The problem in a nutshell}
-  \enquote{\alert<5>{Optimizing \alert<4>{reachability probabilities}} for a \alert<3>{restricted class of \alert<2>{Stochastic \alert<1>{Hybrid Automata}}} via \alert<6>{Flowpipe-Construction}}
+  \enquote{\alert<2>{Optimizing \alert<1>{reachability probabilities}} for a \alert<5>{restricted class of \alert<4>{Stochastic \alert<3>{Hybrid Automata}}} via \alert<6>{Flowpipe-Construction}}
 
   \bigskip
 
-  \only<1>{Hybrid automata: a model for \emph{hybrid systems}
+  \only<3>{Hybrid automata: a model for \emph{hybrid systems}
+
+  \medskip
 
   \cb{\faArrowRight} mixed discrete-continuous behavior
   }%
-  \only<2>{Stochastic hybrid automata: a model for \emph{stochastic} hybrid systems
+  \only<4>{Stochastic hybrid automata: a model for \emph{stochastic} hybrid systems
+
+  \medskip
 
   \cb{\faArrowRight} add stochasticity
   \begin{itemize}
-    \item continuous behavior: stochastic differential equations
-    \item discrete behavior: stochastic jumps
+    \item continuous behavior: e.g., stochastic differential equations
+    \item discrete behavior: e.g., stochastic jumps
   \end{itemize}
   }%
-  \only<3>{Stochastic hybrid automata: a model for \emph{stochastic} hybrid systems
+  \only<5>{Stochastic hybrid automata: a model for \emph{stochastic} hybrid systems
 
-  \cb{\faArrowRight} add stochasticity
+  \medskip
+
+  \cb{Here:}
   \begin{itemize}
-    \item \sout{continuous behavior: stochastic differential equations}
-    \item discrete behavior: stochastic \alert<3>{urgent} jumps
-    \item \cb{\emph{linear hybrid automata}}
+    \item \sout{continuous behavior: e.g., stochastic differential equations}
+    \item discrete behavior: \cb{urgent} jumps and \cb{stochastic} jumps
+    \item \cb{singular automata}
     \begin{itemize}
       \item constant derivatives
       \item predicates compare variables to constants (\enquote{axis-aligned})
     \end{itemize}
   \end{itemize}
-  \medskip
 
-  \cb{Origin:} stochastic hybrid Petri nets with general transitions
+  \bigskip
+
+  \cb{Stochasticity:} continuous distributions
   }%
-  \only<4>{\cb{Question:} What is the probability, given a set of initial states of reaching a set of \emph{goal states}?}%
-  \only<5>{\cb{Question:} What is the \alert{maximal/minimal} probability, given a set of initial states of reaching a set of \emph{goal states}?}%
-  \only<6>{The method.}%
+  \only<1>{\cb{Question:} What is the probability, given a set of initial states of reaching a set of \emph{goal states}?
+
+  \bigskip
+
+  Example: Stochastic jumps
+  \begin{itemize}
+    \item Are taken \enquote{randomly}
+    \item The probability of taking this jump is given by a continuous densitiy function
+
+    \cb{Intuition:} The probability of taking this jump increases with passage of time
+  \end{itemize}
+
+  %\medskip
+  %Non-stochastic jumps
+  %\begin{itemize}
+  %  \item Guards only on continuous variables
+  %  \item Potentially introduce non-determinism
+  %\end{itemize}
+
+
+  }%
+  \only<2>{\cb{Question:} What is the \alert{maximal/minimal} probability, given a set of initial states of reaching a set of \emph{goal states}?
+
+  \bigskip
+
+  \cb{Observation:} There may be several ways (here: discrete non-determism) to reach a goal state
+
+
+  \medskip
+  Dealing with discrete choices
+  \begin{itemize}
+    \item Currently: Over-approximate (e.g., via state space discretization) probabilities for discrete non-determinism.
+    \item Here: Exact probabilities (up to numerical integration)
+  \end{itemize}
+
+  }%
+  \only<6>{\cb{Idea:} represent sets of reachable states by geometric shapes
+  \begin{itemize}
+    \item Usually over-approximative, here: \cb{exact}
+    \item Different types of representations, here: \cb{convex polyhedra}
+  \end{itemize}
+
+  \vspace*{.7cm}
+
+  \begin{minipage}{.5\linewidth}
+    \scriptsize Time elapse
+
+    \centering
+    \input{pics/sa_time_elapse}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+    \scriptsize Jump successors (reset $x_0$)
+
+    \centering
+    \input{pics/sa_jump_successors}
+  \end{minipage}%
+  }%
 \end{frame}
 
 %########################################################
 
 \begin{frame}{The approach}
-  \cb{Idea:} combination of techniques for purely hybrid systems and techniques for the analysis of stochastic systems
 
   \begin{enumerate}
-    \item Compute forwards reachability
+    \item Compute forwards reachability (flowpipe construction)
     \begin{itemize}
-      \item Treat stochastic variables as clocks
-      \item Keep track of \enquote{what you did} $\rightarrow$ \emph{reach tree}
+      \item Keep track of non-determistic choices $\rightarrow$ \emph{reach tree}
+      \item Stochasticity via \emph{random clocks} (one per enabled jump)
     \end{itemize}
-    \item Collect paths which lead to a goal state
+    \item Collect paths in the reach tree which lead to a goal state
     \item Compute \emph{optimal} probability of those paths with respect to different \emph{schedulers}
   \end{enumerate}
 
-  \begin{reminder}{Scheduler}{5cm}
-    Intuition: a scheduler resolves non-determinism
+  \bigskip
+
+  \centering
+  \begin{reminder}{\scriptsize Info: Scheduler}{9cm}
+    \tiny
+    Intuition: a scheduler resolves discrete non-determinism
 
     Different types, relevant here:
     \begin{itemize}
-      \item History-dependent (has memory),
-      \item Prophetic (can predict the future) vs.
-      \item Non-prophetic (decisions based on current knowledge)
+      \item History-dependent (knows past decisions),
+      \item Prophetic (knows random choices) vs. non-prophetic (does not know values of random choices)
     \end{itemize}
   \end{reminder}
 \end{frame}
@@ -91,24 +156,127 @@
 
 \begin{frame}{Flowpipe construction \& reach tree}
 
+  \begin{minipage}{.7\linewidth}
+    \begin{itemize}
+      \item Constant derivatives result in conic sets for time-successors
+      \item Random variables as clocks
+      \item Two types of jumps
+      \begin{itemize}
+        \item Urgent, guarded jumps:
+          \begin{itemize}
+            \item Leave location once an urgent discrete jump is enabled
+            \item Jump time is deterministic
+          \end{itemize}
+          \item Stochastic jumps:
+          \begin{itemize}
+            \item Unguarded (always enabled, no restriction on stochasticity)
+            \item Clocks track \enquote{enabledness time}
+            \item Clock disabled (globally) after taking stoch. jump
+          \end{itemize}
+      \end{itemize}
+    \end{itemize}
+  \end{minipage}%
+  \begin{minipage}{.3\linewidth}
+      \input{pics/random_clocks}
+  \end{minipage}
+
+  \begin{result}{In a nutshell}
+    Non-determinism only over non-stochastic jumps
+    \begin{itemize}
+      \item Time point is fixed (urgent)
+      \item In case several jumps are enabled: non-deterministic choice ($\rightarrow$ reach tree)
+    \end{itemize}
+  \end{result}
+
+\end{frame}
+
+%########################################################
+
+\begin{frame}{Relevant paths}
+After the analysis of the purely hybrid model (flowpipe construction) a \emph{reach tree} collects all state sets and discrete branchings
+\begin{itemize}
+  \item Nodes: represent passage of time, store flowpipe segments
+  \item Parent-child relation: represents a discrete jump (stochastic or non-stochastic)
+\end{itemize}
+
+\bigskip
+
+\cb{Approach}
+\begin{itemize}
+  \item Determine sets of reachable states that satisfy the goal-condition (intersection)
+  \item A path in the reach tree to such a state set represents a sequence of discrete jumps (stochastic and non-stochastic)
+  \begin{itemize}
+    \item Stochastic jumps: The valuation of the random clock for this jump (implicitly) determines its probability
+    \item Non-stochastic jumps: Non-determinism needs to be resolved by a scheduler
+  \end{itemize}
+\end{itemize}
+
+
+
+
+
 \end{frame}
 
 %########################################################
 
 \begin{frame}{Projection on random clocks}
 
+  After the analysis, the reach tree contains sets of reachable states which contain
+  \begin{itemize}
+    \item Reachable valuations for continuous variables
+    \item Reachable valuations for random clocks
+  \end{itemize}
+
+  \medskip
+
+  From now on: Only require valuations of random clocks (projection)
+  \begin{itemize}
+    \item Used for integration
+    \item Non-expired clocks require special handling (\enquote{lifting})
+  \end{itemize}
+
+  \bigskip
+
+  \centering
+  \input{pics/project_and_lift}
+
 \end{frame}
 
 %########################################################
 
 \begin{frame}{Optimal paths}
+  Depending on the scheduler type, valuations of random clocks are treated differently.
 
+  \bigskip
+
+  \only<1>{
+  Non-prophetic scheduler
+  \begin{itemize}
+    \item Each non-determistic choice introduces new schedulers
+    \item Enumerate all schedulers for all possible combinations of choices (traverse the reach tree)
+    \item Collect random variable assignments for each scheduler
+    \item Maximize/minimize: choose scheduler accordingly
+  \end{itemize}
+  }%
+  \only<2>{
+  Prophetic scheduler
+  \begin{itemize}
+    \item Can optimize decisions based on all past and future random variable assignments
+    \item Collect variable assignments for each possible branching (similar to non-prophetic)
+    \item For each choice
+    \begin{itemize}
+      \item Maximizing: union over clock intervals (\enquote{consider all possible options})
+      \item Minimizing: intersection of clock intervals (\enquote{only consider what cannot be avoided})
+    \end{itemize}
+
+  \end{itemize}
+  }%
 \end{frame}
 
 %########################################################
 
 \begin{frame}{Numerical integration: Monte Carlo simulation}
-
+\input{pics/schedulertree}
 \end{frame}
 
 %########################################################

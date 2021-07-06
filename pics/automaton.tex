@@ -1,0 +1,67 @@
+   \begin{tikzpicture}[
+        font=\sffamily,    
+        axis/.style={very thick, ->, >=stealth', line join=miter},
+        every node/.style={text ragged, inner sep=2mm},
+        punkt/.style={rounded corners,shade, top color=white, bottom color=gray!15, color=black, draw=black},
+        dot/.style={circle,fill=black,minimum size=4pt,inner sep=0pt,
+            outer sep=-1pt},->,>=stealth',
+        line/.style={ -, thick} ,
+        arrow/.style={-{Latex[length=1.5mm,width=2mm]}},
+        tlabel/.style={font=\scriptsize, text centered}
+    	]
+      \scriptsize %\tiny
+        \node (dummy) at (0,0) {};       
+        
+        \node[punkt, text width = 1.0cm, align=center] (1) at (6,0) {$\ell_\mathit{ all\_off}$\newline$\dot{x}=4$\newline$\dot{c_1}=0$\newline$\dot{c_2}=0$\newline$\dot{r_1}=0$\newline$\dot{r_2}=0$\newline$x\leq 16$};
+        \node[punkt, text width = 1.0cm, align=center, below left=0.2cm and 1.2cm of 1] (2)  {$\ell_{\mathit{ v1\_on}}$\newline$\dot{x}=-2$\newline$\dot{c_1}=1$\newline$\dot{c_2}=0$\newline$\dot{r_1}=0$\newline$\dot{r_2}=0$\newline$c_1 \leq 2$};
+        \node[punkt, text width = 1.0cm, align=center, below right=0.2cm and 1.2cm of 1] (3)  {$\ell_{\mathit{ v2\_on}}$\newline$\dot{x}=0$\newline$\dot{c_1}=0$\newline$\dot{c_2}=1$\newline$\dot{r_1}=0$\newline$\dot{r_2}=0$\newline$c_2 \leq 1$};
+
+        \node[punkt, text width = 1.5cm, align=center, below=1cm of 3] (4)  {$\ell_{\mathit{ v1\_on\_v2\_blocked}}$\newline$\dot{x}=-2$\newline$\dot{c_1}=1$\newline$\dot{c_2}=0$\newline$\dot{r_1}=0$\newline$\dot{r_2}=1$\newline$c_1 \leq 2$};
+
+        \node[punkt, text width = 1.5cm, align=center, below=of 2] (7)  {$\ell_{\mathit{ v1\_blocked\_v2\_on}}$\newline$\dot{x}=0$\newline$\dot{c_1}=0$\newline$\dot{c_2}=1$\newline$\dot{r_1}=1$\newline$\dot{r_2}=0$\newline$c_2\leq 1$};
+        
+        \node[punkt, text width = 1.0cm, align=center, left=of 7] (6) {$\ell_{\mathit{ v1\_blocked}}$\newline$\dot{x}=4$\newline$\dot{c_1}=0$\newline$\dot{c_2}=0$\newline$\dot{r_1}=1$\newline$\dot{r_2}=0$\newline$x\leq 16$};       
+        
+        \node[punkt, text width = 1.3cm, align=center, below right=of 7] (5) {$\ell_{\mathit{ blocked\_unsafe}}$\newline$\dot{x}=4$\newline$\dot{c_1}=0$\newline$\dot{c_2}=0$\newline$\dot{r_1}=1$\newline$\dot{r_2}=1$\newline};
+        
+        \node[punkt, text width = 1.1cm, align=center, below=0.7cm of 5] (8)  {$\ell_{\mathit{ blocked\_safe}}$\newline$\dot{x}=4$\newline$\dot{c_1}=0$\newline$\dot{c_2}=0$\newline$\dot{r_1}=1$\newline$\dot{r_2}=1$\newline$x\leq 16$};
+ 
+         \node[punkt, text width = 1.0cm, align=center, right=of 4] (9) {$\ell_{\mathit{ v2\_blocked}}$\newline$\dot{x}=4$\newline$\dot{c_1}=0$\newline$\dot{c_2}=0$\newline$\dot{r_1}=0$\newline$\dot{r_2}=1$\newline$x\leq 16$};
+         
+                 
+        \draw[arrow] (dummy) to node[above] { $x:=4$, $c_1:=0$, $c_2:=0$, $r_1:=0$, $r_2:= 0$} (1);   
+        
+        \draw[arrow] (1) to node[above, tlabel, xshift=-0.3cm] {$x\geq 16$} (2);  
+        \draw[arrow] (1) to node[above, tlabel, xshift=0.3cm] {$x\geq 16$} (3);
+        
+        \draw[arrow] (2) to node[above, tlabel, text width=2cm, rotate=53, xshift=0.2cm] {$x< 16 \land c_1\geq 2$\newline $c_1:=0$} (6);  
+        \draw[arrow] (2) to node[right, tlabel, text width=2cm, xshift=-0.15cm] {$x\geq 16 \land c_1\geq 2$\newline $c_1:=0$} (7);  
+        
+        \draw[arrow] (3) to node[left, tlabel, text width=2cm, xshift=0.25cm] {$x\geq 16 \land c_2\geq 1$\newline $c_2:=0$} (4);
+        \draw[arrow] (3) to node[above, tlabel, text width=2cm, rotate=307, xshift=-0.2cm] {$x< 16 \land c_2\geq 1$\newline $c_2:=0$} (9);      
+        
+        \draw[arrow, bend left=40]  (6) to node[left, tlabel, text width = 1cm] {$r_1:=0$} (1);        
+        \draw[arrow] (6) to node[above, tlabel, text width = 1cm] {$x\geq 16$} (7); 
+        
+        \draw[arrow, bend right=40] (9) to node[right, tlabel, text width = 1cm] {$r_2:=0$} (1);
+        \draw[arrow] (9) to node[above, tlabel, text width = 1cm] {$x\geq 16$} (4);         
+ 
+        \draw[arrow] (4) to node[below, tlabel, text width = 1cm, rotate=328, xshift=1.2cm, yshift=0.1cm] {$r_2:=0$} (2); 
+        \draw[arrow, bend left] (4) to node[below, tlabel, text width = 2cm, rotate=53, xshift=0.2cm] {$x<16 \land c_1\geq 2$\newline $c_1:=0$} (8);
+        \draw[arrow, bend right=10] (4) to node[above, tlabel, text width = 2cm, rotate=53, xshift=0.3cm] {$x\geq 16 \land c_1\geq 2$\newline $c_1:=0$} (5);
+
+        \draw[arrow] (7) to node[below, tlabel, text width = 1cm, rotate=32, xshift=-1.2cm, yshift=0.1cm] {$r_1:=0$} (3);        
+        \draw[arrow, bend right] (7) to node[below, tlabel, text width = 2cm, rotate=307, xshift=-0.2cm] {$x<16 \land c_2\geq 1$\newline $c_2:=0$} (8); 
+        \draw[arrow, bend left=10] (7) to node[above, tlabel, text width = 2cm, rotate=307, xshift=-0.2cm] {$x\geq 16 \land c_2\geq 1$\newline $c_2:=0$} (5); 
+        
+       % \draw[bend left] (5) to node[left, tlabel, text width = 1cm] {$x<16 \land r_2:=0$} (6);
+        \draw[arrow, bend left=10] (5) to node[left, tlabel, text width = 1cm] {$r_2:=0$} (7);       %x > 16  
+       % \draw[bend right] (5) to node[right, tlabel, text width = 1cm] {$x<16 \land r_1:=0$} (9);   
+        \draw[arrow, bend right=10] (5) to node[right, tlabel, text width = 1cm] {$r_1:=0$} (4);        %x > 16  
+        
+   
+        \draw[arrow] (8) to node[right, tlabel, text width = 1cm] {$x\geq 16$} (5);
+        \draw[arrow, bend left, bend angle=90] (8) to node[left, tlabel, text width = 1cm] {$r_2:=0$} (6);        
+        \draw[arrow, bend right, bend angle=90] (8) to node[right, tlabel, text width = 1cm] {$r_1:=0$} (9);
+
+  \end{tikzpicture}

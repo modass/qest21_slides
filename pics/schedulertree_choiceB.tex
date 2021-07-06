@@ -29,19 +29,19 @@
                 node[kant, above] {$A$}
     }
     child {
-        node[punkt, align=center] {$\dot{r_0} = 1$\\ $\dot{x} = 1$\\$ x\leq b$}
+        node[punkt, align=center, orange100] {$\dot{r_0} = 1$\\ $\dot{x} = 1$\\$ x\leq b$}
             child {
-                node[punkt, label={below: $\{\textit{goal}\}$}] {$\dot{r_0} = 0$} % goal
-            edge from parent
-                node[sloped, kant, above, pos=.5] { $ r_0$ exp.}
+                node[punkt, orange100, label={below: $\{\textit{goal}\}$}] {$\dot{r_0} = 0$} % goal
+            edge from parent [orange100]
+                node[sloped, orange100, kant, above, pos=.5] { $ r_0$ exp.}
             }
             child {
-                node[punkt, label={below: $\{\}$}] {$\dot{r_0} = 0$} % no goal
-            edge from parent
-                node[sloped, kant, above, pos=.5] { $ x\geq b$}
+                node[punkt, orange100, label={below: $\{\}$}] {$\dot{r_0} = 0$} % no goal
+            edge from parent [orange100]
+                node[sloped, orange100, kant, above, pos=.5] { $ x\geq b$}
             }
-        edge from parent
-                node[kant, above] {$B$}
+        edge from parent [orange100]
+                node[kant, orange100, above] {$B$}
     };
 
 

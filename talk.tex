@@ -4,8 +4,8 @@
 \usepackage{csquotes} % to quote stuff via \enquote{stuff}
 \usepackage{xspace} % automated spacing after macros
 \usepackage[normalem]{ulem} % allows to strikethrough text via \sout{text}
-\usepackage{gnuplot-lua-tikz} % required for images
-\usetikzlibrary{calc,decorations.markings,arrows.meta,automata,backgrounds,positioning,intersections,shapes,decorations.pathreplacing,positioning}
+\usepackage{siunitx} % for nice units
+\usetikzlibrary{calc,decorations.markings,arrows.meta,automata,backgrounds,positioning,intersections,shapes,decorations.pathreplacing,positioning,patterns}
 
 \title{Optimizing reachability probabilities for a restricted class of Stochastic Hybrid Automata via Flowpipe-Construction}
 \author[Stefan Schupp]{Carina Pilch, \textbf{Stefan Schupp}, Anne Remke}
@@ -62,7 +62,7 @@
 
   \bigskip
 
-  \cb{Stochasticity:} continuous distributions
+  \cb{Stochasticity:} continuous probability distributions
   }%
   \only<1>{\cb{Question:} What is the probability, given a set of initial states of reaching a set of \emph{goal states}?
 
@@ -147,7 +147,7 @@
     Different types, relevant here:
     \begin{itemize}
       \item History-dependent (knows past decisions),
-      \item Prophetic (knows random choices) vs. non-prophetic (does not know values of random choices)
+      \item Prophetic (knows all expiration times) vs. non-prophetic (does not know expiration times)
     \end{itemize}
   \end{reminder}
 \end{frame}
@@ -170,7 +170,7 @@
           \item Stochastic jumps:
           \begin{itemize}
             \item Unguarded (always enabled, no restriction on stochasticity)
-            \item Clocks track \enquote{enabledness time}
+            \item Clocks track \enquote{enabling time}
             \item Clock disabled (globally) after taking stoch. jump
           \end{itemize}
       \end{itemize}
@@ -206,7 +206,7 @@ After the analysis of the purely hybrid model (flowpipe construction) a \emph{re
   \item Determine sets of reachable states that satisfy the goal-condition (intersection)
   \item A path in the reach tree to such a state set represents a sequence of discrete jumps (stochastic and non-stochastic)
   \begin{itemize}
-    \item Stochastic jumps: The valuation of the random clock for this jump (implicitly) determines its probability
+    \item Stochastic jumps: The valuation of the random clock for this jump determines the probability to reach a goal state
     \item Non-stochastic jumps: Non-determinism needs to be resolved by a scheduler
   \end{itemize}
 \end{itemize}
@@ -249,39 +249,103 @@ After the analysis of the purely hybrid model (flowpipe construction) a \emph{re
 
   \bigskip
 
-  \only<1>{
-  Non-prophetic scheduler
-  \begin{itemize}
-    \item Each non-determistic choice introduces new schedulers
-    \item Enumerate all schedulers for all possible combinations of choices (traverse the reach tree)
-    \item Collect random variable assignments for each scheduler
-    \item Maximize/minimize: choose scheduler accordingly
-  \end{itemize}
-  }%
-  \only<2>{
-  Prophetic scheduler
-  \begin{itemize}
-    \item Can optimize decisions based on all past and future random variable assignments
-    \item Collect variable assignments for each possible branching (similar to non-prophetic)
-    \item For each choice
+  \begin{minipage}[t]{.6\linewidth}
+    \only<1-2>{
+    Non-prophetic scheduler
     \begin{itemize}
-      \item Maximizing: union over clock intervals (\enquote{consider all possible options})
-      \item Minimizing: intersection of clock intervals (\enquote{only consider what cannot be avoided})
+      \item Each non-determistic choice introduces new schedulers
+      \item Enumerate all schedulers for all possible combinations of choices (traverse the reach tree)
+      \item Collect random variable assignments for each scheduler
+      \item Maximize/minimize: choose scheduler accordingly
     \end{itemize}
+    }%
+    \only<3>{
+    Prophetic scheduler
+    \begin{itemize}
+      \item Can optimize decisions based on all past and future random variable assignments
+      %\item Collect variable assignments for each possible branching (similar to non-prophetic)
+      \item For each choice
+      \begin{itemize}
+        \item Maximizing: union over clock intervals (\enquote{consider all possible options}),
 
-  \end{itemize}
-  }%
+        {\scriptsize\cb{Here:} if $r_0$ expires before $b$, chose $B$, otherwise chose $A$}
+
+        \item Minimizing: intersection of clock intervals (\enquote{only consider what cannot be avoided})
+
+        {\scriptsize\cb{Here:} if $r_0$ expires before $b$, chose $A$, otherwise chose $B$}
+      \end{itemize}
+
+    \end{itemize}
+    }%
+    \only<4>{
+    Prophetic scheduler
+    \begin{itemize}
+        \item Maximizing: union over clock intervals (\enquote{consider all possible options}),
+
+        {\scriptsize Assuming $b > c$: $\mathit{goal}$ can always be reached}
+
+        \item Minimizing: intersection of clock intervals (\enquote{only consider what cannot be avoided})
+
+        {\scriptsize Assuming $b > c$: $\mathit{goal}$ can not be avoided if $r_0$ expires in $(c,b)$}
+
+    \end{itemize}
+    }%
+  \end{minipage}%
+  \begin{minipage}[t]{.4\linewidth}
+    Example
+
+    \centering
+
+    \only<1>{\input{pics/schedulertree_choiceA}}%
+    \only<2>{\input{pics/schedulertree_choiceB}}%
+    \only<3>{\input{pics/schedulertree}}%
+    \only<4>{\input{pics/schedulertree_prophetic}}%
+  \end{minipage}%
+
 \end{frame}
 
 %########################################################
 
-\begin{frame}{Numerical integration: Monte Carlo simulation}
-\input{pics/schedulertree}
+\begin{frame}{Case study}
+  \begin{minipage}[t]{.6\linewidth}
+    \begin{itemize}
+      \item Constant inflow
+      \item Non-deterministic choice of outflow-valve
+      \item Chosen valves stay active for a fixed time
+      \item After using a valve, it is blocked for a random amount of time
+    \end{itemize}
+  \end{minipage}%
+  \begin{minipage}[t]{.4\linewidth}
+    \centering
+    Sketch
+
+
+    \input{pics/case_study_sketch}
+  \end{minipage}%
+
 \end{frame}
 
 %########################################################
 
 \begin{frame}{Conclusion \& prospect}
+
+\begin{itemize}
+  \item Compute optimal probabilities for prophetic and non-prophetic schedulers
+  \item No discretization required
+  \item Similar complexity for both scheduler types
+\end{itemize}
+
+\bigskip
+
+Prospect
+\begin{itemize}
+  \item Further types of non-determinism
+  \begin{itemize}
+    \item Non-deterministic rates (e.g., rectangular automata)
+    \item Non-deterministic jump times
+  \end{itemize}
+  \item Other state set representations
+\end{itemize}
 
 \end{frame}
 

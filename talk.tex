@@ -1,5 +1,5 @@
 \documentclass[aspectratio=169]{beamer}
-\usetheme[logo]{hypro} % the template, I can adjust it to WWU, if you want
+\usetheme[logo]{hypro} % the template, use option "wwu" instead of "logo" to set the footer
 \usepackage[useregional]{datetime2} % nice date typesetting
 \usepackage{csquotes} % to quote stuff via \enquote{stuff}
 \usepackage{xspace} % automated spacing after macros
@@ -19,7 +19,67 @@
 \begin{document}
 
 \begin{frame}[plain]
-\maketitle
+	\begin{centering}
+		\vspace*{0.5cm}
+		\begin{beamercolorbox}[sep=8pt,center]{title}
+			\usebeamerfont{title}\inserttitle\par%
+			\ifx\insertsubtitle\@empty%
+			\else%
+			\vskip0.25em%
+			{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+			\fi%
+		\end{beamercolorbox}%
+		\vskip1em\par
+		\begin{beamercolorbox}[sep=8pt,center]{author}
+			\usebeamerfont{author}\insertauthor
+		\end{beamercolorbox}
+		\begin{beamercolorbox}[sep=8pt,center]{institute}
+			
+			\includegraphics[height=1cm]{pics/TU_logo.png}\hspace{.5cm}\includegraphics[height=1cm]{pics/wwu.png}
+			
+			\usebeamerfont{institute}\insertinstitute
+		\end{beamercolorbox}
+		\begin{beamercolorbox}[sep=8pt,center]{date}
+			\usebeamerfont{date}\insertdate
+		\end{beamercolorbox}%\vskip0.5em
+		\vfill
+		\if@dfg
+		\vspace*{1cm}
+		\tiny
+		This work is part of the project HyPro
+		\if@unravel
+		and the Research Training Group 2236 UnRAVeL
+		\fi
+		\\
+		\href{http://ths.rwth-aachen.de/research/hypro/}{\includegraphics[width=.15\paperwidth]{pics/hypro_logo.png}}
+		\if@unravel
+		\qquad
+		\href{https://moves.rwth-aachen.de/research/projects/unravel/}{\includegraphics[width=.15\paperwidth]{pics/rwth_unravel_bild_rgb.png}}\\
+		\else
+		\\
+		\fi
+		which
+		\if@unravel
+		are
+		\else
+		is
+		\fi
+		funded by the German Research Council (DFG).
+		\else
+		\if@unravel
+		\tiny
+		This work is part of the  Research Training Group 2236 UnRAVeL\\
+		\href{https://moves.rwth-aachen.de/research/projects/unravel/}{\includegraphics[width=.15\paperwidth]{pics/rwth_unravel_bild_rgb.png}}\\
+		which is funded by the German Research Council (DFG).
+		\else
+		\vspace*{1.6cm}
+		\fi
+		\fi
+
+	\end{centering}
+	% adjust page count
+	\addtocounter{framenumber}{-1}
+	%\vfill
 \end{frame}
 
 %########################################################

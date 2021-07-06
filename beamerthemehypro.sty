@@ -21,6 +21,10 @@
 \@logofalse
 \DeclareOption{logo}{\@logotrue}
 
+\newif\if@wwu
+\@wwufalse
+\DeclareOption{wwu}{\@wwutrue}
+
 \newif\if@bgimage
 \@bgimagefalse
 \DeclareOption{bgimage}{\@bgimagetrue}
@@ -287,13 +291,21 @@ drop fuzzy shadow
 	%\hbox{%
 		\if@logo%
 		\begin{beamercolorbox}[wd=.30\paperwidth,left,dp=.1cm]{palette secondary}%s
-			\hspace*{.1cm}\includegraphics[width=.30\paperwidth,height=.7cm,keepaspectratio]{pics/TU_logo.png}%
+			\hspace*{.1cm}\includegraphics[width=.30\paperwidth,height=.7cm,keepaspectratio]{pics/TU_logo.png}
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.60\paperwidth,center,dp=.1cm]{palette secondary}%
+		\hspace*{-.15\paperwidth}%
+		\else%
+		\if@wwu%
+		\begin{beamercolorbox}[wd=.30\paperwidth,left,dp=.1cm]{palette secondary}%s
+			\hspace*{.1cm}\includegraphics[width=.30\paperwidth,height=.7cm,keepaspectratio]{pics/wwu.png}
 		\end{beamercolorbox}%
 		\begin{beamercolorbox}[wd=.60\paperwidth,center,dp=.1cm]{palette secondary}%
 		\hspace*{-.15\paperwidth}%
 		\else%
 		\begin{beamercolorbox}[wd=.90\paperwidth,center,dp=.1cm]{palette secondary}%
 		\hspace*{.05\paperwidth}%
+		\fi
 		\fi%
 			\footnotesize\usebeamerfont{author in%
 head/foot}%
@@ -329,9 +341,12 @@ head/foot}%
 		\end{beamercolorbox}
 		\begin{beamercolorbox}[sep=8pt,center]{institute}
 			\if@logo
-			\includegraphics[height=1cm]{pics/TU_logo.png}\\
-			%\else
+			\includegraphics[height=1cm]{pics/TU_logo.png}
+			\else
 			%\vspace*{1cm}
+			\fi
+			\if@wwu
+			\includegraphics[height=1cm]{pics/wwu.png}
 			\fi
 			\usebeamerfont{institute}\insertinstitute
 		\end{beamercolorbox}

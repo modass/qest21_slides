@@ -3,7 +3,7 @@ all:
 	latexmk -c talk
 
 continuous:
-	latexmk -pdf -pcv --halt-on-error talk
+	latexmk -pdf -pvc --halt-on-error talk
 
 clean:
 	latexmk -C talk

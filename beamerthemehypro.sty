@@ -217,9 +217,33 @@ drop fuzzy shadow
   \begin{reminderBox}[#2]{#1}}
 	{\par\end{reminderBox}}
 
+\newtcolorbox{resultBox}[2][]{
+colback=green25,
+colbacktitle=green50,
+coltitle=black,
+colframe=black,
+boxsep=1mm,
+boxrule=.5pt,
+titlerule=0pt,
+arc=0pt,
+top=1mm,
+left=1mm,
+title=#2,
+width=#1,
+fonttitle=\sffamily\footnotesize,
+fontupper=\footnotesize,
+fontlower=\footnotesize,
+enhanced,
+drop fuzzy shadow
+}
+
+\newenvironment<>{result}[2]{%
+  \begin{resultBox}[#2]{#1}}
+	{\par\end{resultBox}}
 
 
 % result block in green
+\iffalse
 \newenvironment<>{result}[2][\textwidth]{%
   \begin{actionenv}\footnotesize#3%
 	\setlength{\textwidth}{#1}%
@@ -232,6 +256,7 @@ drop fuzzy shadow
      }%
       \usebeamertemplate{block begin}}
     {\par\usebeamertemplate{block end}\end{actionenv}}
+\fi
 
 \usepackage{calc}
 \setbeamertemplate{headline}{%

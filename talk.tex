@@ -34,9 +34,9 @@
 			\usebeamerfont{author}\insertauthor
 		\end{beamercolorbox}
 		\begin{beamercolorbox}[sep=8pt,center]{institute}
-			
+
 			\includegraphics[height=1cm]{pics/TU_logo.png}\hspace{.5cm}\includegraphics[height=1cm]{pics/wwu.png}
-			
+
 			\usebeamerfont{institute}\insertinstitute
 		\end{beamercolorbox}
 		\begin{beamercolorbox}[sep=8pt,center]{date}
@@ -94,6 +94,10 @@
   \medskip
 
   \cb{\faArrowRight} mixed discrete-continuous behavior
+
+  \begin{center}
+    \input{pics/chemicalPlantAutomaton}
+  \end{center}
   }%
   \only<4>{Stochastic hybrid automata: a model for \emph{stochastic} hybrid systems
 
@@ -109,16 +113,21 @@
 
   \medskip
 
-  \cb{Here:}
-  \begin{itemize}
-    \item \sout{continuous behavior: e.g., stochastic differential equations}
-    \item discrete behavior: \cb{urgent} jumps and \cb{stochastic} jumps
-    \item \cb{singular automata}
+  \begin{minipage}{.6\textwidth}
+    \cb{Here:}
     \begin{itemize}
-      \item constant derivatives
-      \item predicates compare variables to constants (\enquote{axis-aligned})
+      \item \sout{continuous behavior: e.g., stochastic differential equations}
+      \item discrete behavior: \cb{urgent} jumps and \cb{stochastic} jumps
+      \item \cb{singular automata}
+      \begin{itemize}
+        \item constant derivatives
+        \item predicates compare variables to constants (\enquote{axis-aligned})
+      \end{itemize}
     \end{itemize}
-  \end{itemize}
+  \end{minipage}%
+  \begin{minipage}{.4\textwidth}
+    \input{pics/sha_example}
+  \end{minipage}%
 
   \bigskip
 
@@ -160,7 +169,7 @@
   \end{itemize}
 
   }%
-  \only<6>{\cb{Idea:} represent sets of reachable states by geometric shapes
+  \only<6->{\cb{Idea:} represent sets of reachable states by geometric shapes
   \begin{itemize}
     \item Usually over-approximative, here: \cb{exact}
     \item Different types of representations, here: \cb{convex polyhedra}
@@ -168,6 +177,7 @@
 
   \vspace*{.7cm}
 
+  \visible<7->{%
   \begin{minipage}{.5\linewidth}
     \scriptsize Time elapse
 
@@ -180,6 +190,7 @@
     \centering
     \input{pics/sa_jump_successors}
   \end{minipage}%
+  }%
   }%
 \end{frame}
 
@@ -200,6 +211,7 @@
   \bigskip
 
   \centering
+  \visible<2>{%
   \begin{reminder}{\footnotesize Info: Scheduler}{9cm}
     \footnotesize
     Intuition: a scheduler resolves discrete non-determinism
@@ -210,6 +222,7 @@
       \item Prophetic (knows all expiration times) vs. non-prophetic (does not know expiration times)
     \end{itemize}
   \end{reminder}
+  }%
 \end{frame}
 
 %########################################################
@@ -221,6 +234,7 @@
       \item Constant derivatives result in conic sets for time-successors
       \item Random variables as clocks
       \item Two types of jumps
+      \visible<2->{%
       \begin{itemize}
         \item Urgent, guarded jumps:
           \begin{itemize}
@@ -234,20 +248,23 @@
             \item Clock disabled (globally) after taking stoch. jump
           \end{itemize}
       \end{itemize}
+      }%
     \end{itemize}
   \end{minipage}%
   \begin{minipage}{.3\linewidth}
-      \input{pics/random_clocks}
+      \visible<2->{%
+      \input{pics/random_clocks}}
   \end{minipage}
 
+  \visible<3->{
   \begin{result}{In a nutshell}{\linewidth}
     Non-determinism only over non-stochastic jumps
     \begin{itemize}
       \item Time point is fixed (urgent)
-      \item In case several jumps are enabled: non-deterministic choice ($\rightarrow$ reach tree)
+      \item In case several non-stochastic jumps are enabled: non-deterministic choice ($\rightarrow$ reach tree)
     \end{itemize}
   \end{result}
-
+  }
 \end{frame}
 
 %########################################################
@@ -261,19 +278,24 @@ After the analysis of the purely hybrid model (flowpipe construction) a \emph{re
 
 \bigskip
 
-\cb{Approach}
-\begin{itemize}
-  \item Determine sets of reachable states that satisfy the goal-condition (intersection)
-  \item A path in the reach tree to such a state set represents a sequence of discrete jumps (stochastic and non-stochastic)
+\begin{minipage}{.7\textwidth}
+  \visible<2->{%
+  \cb{Approach}
   \begin{itemize}
-    \item Stochastic jumps: The valuation of the random clock for this jump determines the probability to reach a goal state
-    \item Non-stochastic jumps: Non-determinism needs to be resolved by a scheduler
+    \item Determine sets of reachable states that satisfy the goal-condition (location \& state sets)
+    \item A path in the reach tree to such a state set represents a sequence of discrete jumps (stochastic and non-stochastic)
+    \begin{itemize}
+      \item Stochastic jumps: The valuation of the random clock for this jump determines the probability to reach a goal state
+      \item Non-stochastic jumps: Non-determinism needs to be resolved by a scheduler
+    \end{itemize}
   \end{itemize}
-\end{itemize}
-
-
-
-
+  }%
+\end{minipage}%
+\begin{minipage}{.3\textwidth}
+  \raggedleft
+  \scalebox{.7}{
+  \input{pics/schedulertree}}
+\end{minipage}%
 
 \end{frame}
 
@@ -289,6 +311,7 @@ After the analysis of the purely hybrid model (flowpipe construction) a \emph{re
 
   \medskip
 
+  \visible<2->{%
   From now on: Only require valuations of random clocks (projection)
   \begin{itemize}
     \item Used for integration
@@ -299,7 +322,7 @@ After the analysis of the purely hybrid model (flowpipe construction) a \emph{re
 
   \centering
   \input{pics/project_and_lift}
-
+  }%
 \end{frame}
 
 %########################################################
@@ -366,7 +389,18 @@ After the analysis of the purely hybrid model (flowpipe construction) a \emph{re
 
 %########################################################
 
-\begin{frame}{Case study}
+\begin{frame}{Computation of probabilities}
+
+  \begin{itemize}
+    \item Have a set of clock valuations (depending on the scheduler) for which the goal states can be reached
+    \item Use numerical integration (Monte Carlo) to compute actual probabilites
+  \end{itemize}
+
+\end{frame}
+
+%########################################################
+
+\begin{frame}{Exemplary case study}
   \begin{minipage}[t]{.6\linewidth}
     \begin{itemize}
       \item Constant inflow
@@ -379,10 +413,18 @@ After the analysis of the purely hybrid model (flowpipe construction) a \emph{re
     \centering
     Sketch
 
-
     \input{pics/case_study_sketch}
   \end{minipage}%
 
+  \bigskip
+
+  \visible<2->{%
+  Results
+  \begin{itemize}
+    \item Compute maximal optimal probabilities for prophetic and non-prophetic schedulers
+    \item Results comparable to existing approaches, non-prophetic only
+  \end{itemize}
+  }%
 \end{frame}
 
 %########################################################
@@ -393,6 +435,7 @@ After the analysis of the purely hybrid model (flowpipe construction) a \emph{re
   \item Compute optimal probabilities for prophetic and non-prophetic schedulers
   \item No discretization required
   \item Similar complexity for both scheduler types
+  \item Results published at QEST'21
 \end{itemize}
 
 \bigskip

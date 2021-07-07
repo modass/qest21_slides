@@ -1,0 +1,18 @@
+\begin{tikzpicture}[>=latex, loc/.style={draw,rectangle, rounded corners ,text centered, minimum height= 5em, text width=1.8cm, thick, node distance=2cm}, font=\scriptsize, every node/.style={text width=1.8cm, text centered}]
+	\useasboundingbox (-3.5,-1.5) rectangle (6,1.5);
+
+	\node[loc, color=blue100, initial, initial text={\scriptsize$x \in [20,25] \land$ $c = 5$}] (off) {\scriptsize$\mathit{off}$\\
+		$\dot x = - 1$\\
+		$\dot c = 1$\\
+		$x \geq 20$};
+
+	\node[loc, color=orange100, right=of off] (on) {\scriptsize$\mathit{on}$\\
+		$\dot x = 2$\\
+		$\dot c = 1$\\
+		$x \leq 60$\\
+		$c \leq 20$};
+	\draw[thick, ->] (on) edge[bend left] node[above]{\scriptsize$x\geq 55$} node[below]{$c := 0$} (off);
+	\draw[thick, ->] (off) edge[bend left] node[above, text width=2cm]{\scriptsize$x \leq 40 \land$  $c \geq 5$} (on);
+
+
+\end{tikzpicture}
